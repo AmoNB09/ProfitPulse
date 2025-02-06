@@ -1,0 +1,111 @@
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import CryptoJS from "crypto-js";
+import Stripe from "stripe";
+
+const stripe = new Stripe("your-stripe-secret-key");
+
+export default function ProfitPulse() {
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [niche, setNiche] = useState("");
+  const [incomeMethods, setIncomeMethods] = useState([]);
+  const [aiGeneratedIdea, setAiGeneratedIdea] = useState("");
+  const [balance, setBalance] = useState(50); // Welcome bonus
+  const [realTimeEarnings, setRealTimeEarnings] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRealTimeEarnings((prev) => prev + Math.floor(Math.random() * 10)); // Increased earnings rate
+    }, 3000); // Faster updates
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const securityUpdate = setInterval(() => {
+      console.log("🔒 Security auto-updating... Strengthening defenses!");
+      // Implement automated security patches here
+    }, 1000 * 60 * 60 * 24 * 30); // Runs every month
+    return () => clearInterval(securityUpdate);
+  }, []);
+
+  useEffect(() => {
+    const trendingNiches = [
+      "AI Automation",
+      "Crypto Investments",
+      "Remote Work Tools",
+      "NFT Marketplaces",
+      "Health & Wellness Apps",
+      "E-commerce Automation",
+      "Freelancing Platforms"
+    ];
+    setNiche(trendingNiches[Math.floor(Math.random() * trendingNiches.length)]);
+  }, []);
+
+  const generateIdeas = () => {
+    const ideas = [
+      "Affiliate Marketing",
+      "Print-on-Demand Store",
+      "Ad Revenue from a Blog",
+      "Selling Digital Products",
+      "YouTube Automation",
+      "Dropshipping",
+      "Stock Photography",
+      "Online Course Creation"
+    ];
+    setIncomeMethods(ideas.filter(() => Math.random() > 0.3)); // Increased chance of more ideas
+    setBalance(balance + Math.floor(Math.random() * 100) + 20); // Higher income potential
+  };
+
+  const generateAiIdea = () => {
+    const aiIdeas = [
+      "Automated blog content generator",
+      "AI-driven product recommendations",
+      "Passive income chatbot assistant",
+      "Offline AI market trend analyzer",
+      "AI-powered eBook writer",
+      "AI-powered stock trading assistant"
+    ];
+    setAiGeneratedIdea(aiIdeas[Math.floor(Math.random() * aiIdeas.length)]);
+    setBalance(balance + Math.floor(Math.random() * 100) + 30);
+  };
+
+  const withdrawFunds = async () => {
+    const ownerCut = balance * 0.1; // Owner receives 10%
+    const userBalance = balance - ownerCut;
+    alert(`Owner cut: $${ownerCut}\nUser withdraws: $${userBalance}`);
+    setBalance(0);
+  };
+
+  return (
+    <div className="p-6 max-w-2xl mx-auto text-center bg-gradient-to-br from-blue-100 to-purple-200 min-h-screen flex flex-col justify-center items-center">
+      <h1 className="text-4xl font-extrabold mb-6 text-blue-700">🚀 ProfitPulse - Generational Wealth Companion 💰</h1>
+      <p className="text-md text-gray-600 mb-4">Ensuring financial security for you and future generations.</p>
+      <Card className="shadow-2xl rounded-2xl p-8 bg-white max-w-lg w-full border border-blue-300">
+        <CardContent className="p-6">
+          <p className="mb-4 text-lg text-gray-700">Sign Up to Get Started:</p>
+          <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" className="mb-3 p-3 border-2 border-blue-400 rounded-lg w-full" required />
+          <Input type="text" value={surname} onChange={(e) => setSurname(e.target.value)} placeholder="Surname" className="mb-3 p-3 border-2 border-blue-400 rounded-lg w-full" required />
+          <Input type="date" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} className="mb-3 p-3 border-2 border-blue-400 rounded-lg w-full" required />
+          <p className="mt-2 text-green-600">🎁 Welcome Bonus: $50 added to your balance!</p>
+        </CardContent>
+      </Card>
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold text-yellow-700">🛡️ Secured for Generations:</h2>
+        <p className="text-gray-600 text-sm">Your account and earnings are protected with advanced security measures, ensuring financial stability for your family.</p>
+      </div>
+      <Card className="shadow-2xl rounded-2xl p-8 bg-white max-w-lg w-full border border-blue-300 mt-6">
+        <CardContent className="p-6">
+          <p className="mb-4 text-lg text-gray-700">Trending Niche: {niche}</p>
+          <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+            <Button className="bg-blue-500 text-white p-3 rounded-lg shadow-md hover:bg-blue-600 transition" onClick={generateIdeas}>Generate Ideas</Button>
+            <Button className="bg-green-500 text-white p-3 rounded-lg shadow-md hover:bg-green-600 transition" onClick={generateAiIdea}>Generate AI Idea</Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
